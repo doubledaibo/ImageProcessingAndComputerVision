@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     out = jpegCompress(im, quantmatrix)
 
-    f = plt.figure("JPEG Compression")
+    plt.figure("JPEG Compression")
 
     plt.subplot(121)
     plt.imshow(im)
