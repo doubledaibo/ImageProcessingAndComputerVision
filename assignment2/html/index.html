@@ -1,0 +1,105 @@
+<html>
+<head>
+</head>
+<body>
+    <h1>Project2 Automatic Panoramic Mosaic Stitching</h1>
+    <p>Dai Bo   1155053920</p>
+    <hr></hr>
+    <h2>Introduction</h2>
+    In this project we implement a system that can corrects images suffering from radial distortion,
+    and aligns a set of images together, producing a panorama by matching their SIFT features.
+    The system can also project estimated panorama into cylinder view using linear blending.
+    In addition, the system has stand-alone convolution and pyramid generation module,
+    which can provide laplacian blending for alternative choice.
+    <hr></hr>
+    <h2>Implemetation Details</h2>
+    <ul>
+      <li>Radial Distortion Correction -- <i>WarpSpherical.cpp</i></li>
+      <li>Image Pair Alignment -- <i>FeatureAlign.cpp</i></li>
+      <li>Global Alignment -- <i>GlobalAlign.cpp</i></li>
+      <li><b>Bundle Adjustment</b> -- <i>BundleAdjust in GlobalAlign.cpp</i></li>
+      <li><b>Gaussian and Lapcian Pyramid Generation</b> -- <i>Pyramid.h Pyramid.cpp</i></li>
+      <li>Linear Blending -- <i>BlendImages.cpp</i></li>
+      <li><b>Lapcian Blending</b> -- <i>LaplacianBlend in BlendImages.cpp</i></li>
+    </ul>
+    <hr></hr>
+    <h2>Usages</h2>
+    <ol>
+      <li>Radial Distortion</li>
+      <p>panorama rdWarp [image_name].tga [output_name].tga [focal_length] [k1] [k2]</p>
+      <p>e.g. panorama <i>rdWarp im1.tga good_im1.tga 252 0.1 0.001</i></p>
+      <li>Images Alignment</li>
+      <p>panorama alignAll [image_list].txt [output_orientation].txt [min_matches]
+        [focal_length] [num_RANSAC_iter] [RANSAC_thre] [num_bundle_adjust_iter] [sift]</p>
+      <p>e.g. panorama <i>alignAll list.txt orientation.txt 20 595 100 10 8 sift</i></p>
+      <li>Images Blending</li>
+      <p>panorama blendAll [orientation].txt [output_panorama].tga [focal_length] [blend_radius]
+        [blending_function_type]^ [num_pyramid_levels]*</p>
+      <p>^: 0: straightfoward 1: linear 2: laplacian</p>
+      <p>*: only useful when using laplacian blending</p>
+      <p>e.g. panorama <i>blendAll orientation.txt out_img.tga 595 200 1 0</i></p>
+    </ol>
+    <hr></hr>
+    <h2>Experiment</h2>
+    <hr></hr>
+    <h3>0.Radial Distortion Correction</h3>
+    <table>
+      <tr align="center"><td>Original</td><td>Corrected</td></tr>
+      <tr align="center"><td><img width="300px" src="Rd_in_1.png"></td>
+        <td><img width="300px" src="Rd_out_1.png"></td></tr>
+      <tr align="center"><td><img width="300px" src="Rd_in_2.png"></td>
+        <td><img width="300px" src="Rd_out_2.png"></td></tr>
+    </table>
+    <h3>1.Panorama</h3>
+    <p>My generation of panorama sometimes
+    only occupys a small region centered on the final image.
+    Although complete, it's too small to see, and I have to crop it out.
+    Maybe it's because I use wrong focal length, or there is some bug in my program.</p>
+    <table>
+      <tr align="center"><td>Mountain
+                            <a href="Mountain_linear.png">High Resolution</a>
+                            <a href="mountain.html">Wrapper</a></td><td><img height="400px" src="Mountain_linear.png"></td>
+                            <td><b>The result seems good.</b></td></tr>
+      <tr align="center"><td>University Railway Station
+        <a href="Panorama_self.png">High Resolution</a>
+        <a href="station.html">Wrapper</a></td><td><img height="400px" src="Panorama_self.png"></td>
+                          <td><b>There some moving people, leading to ghost effect.
+                              We need techniques like graph cut to deal with it. </b></td></tr>
+      <tr align="center"><td>MS Lobby
+        <a href="Panorama_lobby.png">High Resolution</a>
+        <a href="lobby.html">Wrapper</a></td><td><img height="400px" src="Panorama_lobby.png"></td>
+                        <td><b>The upper part of the panorama is not aligned very well,
+                          possibly because of wrong estimation of focal length.</b></td></tr>
+      <tr align="center"><td>Piazzanova
+        <a href="Panorama_piazza.png">High Resolution</a>
+        <a href="piazza.html">Wrapper</a></td><td><img height="400px" src="Panorama_piazza.png"></td>
+        <td><b>The projection is too small and I have to crop it out,
+              possibly because of wrong estimation of focal length.</b></td></tr>
+      <tr align="center"><td>PaloAlto
+        <a href="Panorama_paloalto.png">High Resolution</a>
+        <a href="paloalto.html">Wrapper</a></td><td><img height="400px" src="Panorama_paloalto.png"></td>
+        <td><b>The result seems good.</b></td></tr>
+    </table>
+    <h3>2.Effect of different blending function</h3>
+    <p>In this case, linear blending is good enough, which is efficient yet effective.</p>
+    <table>
+      <tr align="center"><td>None</td><td>Linear</td><td>Laplacian</td></tr>
+      <tr align="center"><td><img width="500px" src="Mountain_normal.png"></td>
+          <td><img width="500px" src="Mountain_linear.png"></td>
+          <td><img width="500px" src="Mountain_pyramid.png"></td></tr>
+    </table>
+    <h3>3.Laplacian blending</h3>
+    <table>
+      <tr><td colspan="6"><center>Blending with 5-level laplacian pyramid</center></td></tr>
+      <tr align="center"><td>Final</td><td>Level 4</td><td>Level 3</td><td>Level 2</td><td>Level 1</td><td>Level 0</td></tr>
+      <tr align="center">
+      <td><img width="300px" src="Mountain_pyramid.png"></td>
+      <td><img width="300px" src="Pyramid_level_4_blending_result.png"></td>
+      <td><img width="300px" src="Pyramid_level_3_blending_result.png"></td>
+      <td><img width="300px" src="Pyramid_level_2_blending_result.png"></td>
+      <td><img width="300px" src="Pyramid_level_1_blending_result.png"></td>
+      <td><img width="300px" src="Pyramid_level_0_blending_result.png"></td></tr>
+    </table>
+    <hr></hr>
+</body>
+</html>

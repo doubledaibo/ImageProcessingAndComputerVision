@@ -1,0 +1,125 @@
+<html>
+<head>
+<style>
+  table, th, tr, td{
+    border: 1px solid black;
+  }
+ span { 
+    color: red;
+ }
+  </style>
+</head>
+<body>
+    <h1>Project3 Optical Flow Estimation</h1>
+    <p>Dai Bo   1155053920</p>
+    <hr></hr>
+    <h2>Introduction</h2>
+    In this project we've implemented coarse-to-fine Horn-Schunck optical flow estimation algorithm, 
+ 	which by adding an extra global smoothness term into the set of constraints of optical flow field, turning the ill-posed problem into a well-established one.    
+    <hr></hr>
+    <h2>Algorithm Detail</h2>
+    <ul>
+      <li>Build Gaussian Pyramid for each image</li>
+      <li>For each level of images, first calculate Laplacian operator</li>
+      <li>Calculate warped version of image 2</li>
+      <li>Calculate gradients in x, y, z directions</li>
+      <li>Build A, b in the linear system</li>
+	<li>Solve the linear system in order to acquire deltauv</li>
+      <li>Use median blur to smooth the result uv at each iteration of each level</li> 
+    </ul>
+    <h2>Pseudo Code</h2>
+    <img height="200px" src="psudo.png">
+    <hr></hr>
+    <h2>Setting</h2>
+<ul>
+<li>lambda: 10</li>
+<li>number of warping iterations: 10</li>
+<li>number of levels in pyramids: 15</li
+<li>gaussian filter size: 5 * 5 </li>
+<li>median blur size: 3</li> 
+</ul>
+<hr></hr>
+    <h2>Statistics</h2>
+<h4>Note</h4>
+<ul>
+<li>Bug in computing EPE
+<p>     ind2 = (np.abs(stu)>smallflow) | <span>(np.abs(stv</span>>smallflow))</p>
+<p>->     ind2 = (np.abs(stu)>smallflow) | <span>(np.abs(stv)</span>>smallflow) </p></li>
+<li> Should use flow_gt[flow_gt > 1e9] = np.nan  to avoid strange epe value</li>
+</ul>
+<h4>Results</h4>
+    <table width="800">
+	<tr align="center"> 
+		<th>Case</th><th>AAE</th><th>EPE</th><th>Executive Time</th>
+	</tr>
+	<tr align="center"><td>Venus</td><td>10.488</td><td>0.759</td><td>20m32.488s</td></tr>
+	<tr align="center"><td>Urban3</td><td>10.124</td><td>1.101</td><td>47m43.110s</td></tr>
+	<tr align="center"><td>Urban2</td><td>7.913</td><td>1.287</td><td>49m19.237s</td></tr>
+	<tr align="center"><td>RubberWhale</td><td>10.251</td><td>0.315</td><td>34m7.649s</td></tr>
+	<tr align="center"><td>Hydrangea</td><td>5.525</td><td>0.487</td><td>34m10.310s</td></tr>
+	<tr align="center"><td>Grove3</td><td>9.844</td><td>1.017</td><td>43m9.266s</td></tr>
+	<tr align="center"><td>Grove2</td><td>4.862</td><td>0.333</td><td>40m27.557s</td></tr>
+	<tr align="center"><td>Dimetrodon</td><td>4.904</td><td>0.258</td><td>27m44.466s</td></tr>
+	<tr align="center"><td>Average</td><td>7.988875</td><td><span>0.694625</span></td><td>N/A</td></tr>
+    </table>
+
+<p>
+The program is too slow when the frame size is large,
+so maybe fewer number of warping iterations or fewer number of levels in pyramids is needed to save time.
+</p>
+    <hr></hr>
+    <h2>Optical Flow Results</h2>
+    <table>
+      <tr align="center">
+	<td>Venus</td>
+	<td><img height="300px" src="other-data/Venus/frame10.png"></td>
+	<td><img height="300px" src="other-data/Venus/frame11.png"></td>
+	<td><img height="300px" src="results/Venus.jpg"></td>
+	</tr>
+<tr align="center">	
+	<td>Urban3</td>
+	<td><img height="300px" src="other-data/Urban3/frame10.png"></td>
+	<td><img height="300px" src="other-data/Urban3/frame11.png"></td>
+	<td><img height="300px" src="results/Urban3.jpg"></td>
+	</tr>
+<tr align="center">	
+	<td>Urban2</td>
+	<td><img height="300px" src="other-data/Urban2/frame10.png"></td>
+	<td><img height="300px" src="other-data/Urban2/frame11.png"></td>
+	<td><img height="300px" src="results/Urban2.jpg"></td>
+	</tr>
+      <tr align="center">	
+	<td>RubberWhale</td>
+	<td><img height="300px" src="other-data/RubberWhale/frame10.png"></td>
+	<td><img height="300px" src="other-data/RubberWhale/frame11.png"></td>
+	<td><img height="300px" src="results/RubberWhale.jpg"></td>
+	</tr>
+
+    <tr align="center">	
+	<td>Hydrangea</td>
+	<td><img height="300px" src="other-data/Hydrangea/frame10.png"></td>
+	<td><img height="300px" src="other-data/Hydrangea/frame11.png"></td>
+	<td><img height="300px" src="results/Hydrangea.jpg"></td>
+	</tr>
+    <tr align="center">	
+	<td>Grove3</td>
+	<td><img height="300px" src="other-data/Grove3/frame10.png"></td>
+	<td><img height="300px" src="other-data/Grove3/frame11.png"></td>
+	<td><img height="300px" src="results/Grove3.jpg"></td>
+	</tr>
+    <tr align="center">	
+	<td>Grove2</td>
+	<td><img height="300px" src="other-data/Grove2/frame10.png"></td>
+	<td><img height="300px" src="other-data/Grove2/frame11.png"></td>
+	<td><img height="300px" src="results/Grove2.jpg"></td>
+	</tr>
+    <tr align="center">	
+	<td>Dimetrodon</td>
+	<td><img height="300px" src="other-data/Dimetrodon/frame10.png"></td>
+	<td><img height="300px" src="other-data/Dimetrodon/frame11.png"></td>
+	<td><img height="300px" src="results/Dimetrodon.jpg"></td>
+	</tr>
+    </table>
+    <hr></hr>
+</body>
+</html>

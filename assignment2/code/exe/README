@@ -1,0 +1,20 @@
+Usages
+
+Radial Distortion
+panorama rdWarp [image_name].tga [output_name].tga [focal_length] [k1] [k2]
+
+e.g. panorama rdWarp im1.tga good_im1.tga 252 0.1 0.001
+
+Images Alignment
+panorama alignAll [image_list].txt [output_orientation].txt [min_matches] [focal_length] [num_RANSAC_iter] [RANSAC_thre] [num_bundle_adjust_iter] [sift]
+
+e.g. panorama alignAll list.txt orientation.txt 20 595 100 10 8 sift
+
+Images Blending
+panorama blendAll [orientation].txt [output_panorama].tga [focal_length] [blend_radius] [blending_function_type]^ [num_pyramid_levels]*
+
+^: 0: straightfoward 1: linear 2: laplacian
+
+*: only useful when using laplacian blending
+
+e.g. panorama blendAll orientation.txt out_img.tga 595 200 1 0
