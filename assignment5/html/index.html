@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<style>
+			p {text-align: center}
+			table, th, td {border: solid black}
+			td {width: 100px}
+			table {border-collapse: collapse}
+			span {color: red}
+		</style>
+	</head>
+	<body>
+		<h1>Image Classification</h1>
+		Dai Bo 1155053920
+		<hr></hr>
+		<h2>Introduction</h2>
+		In this project, we implement an image classification system based on multiple features and SVM.
+		Particularly, we use various coding schemes and pooling methods to get the best representation of one image, and apply kernel SVM to improve the classification accuracy.
+		<hr></hr>
+		<h2>Pipeline</h2>
+		<ul>
+			<li>Extract features from image (choice: SIFT/SURF)</li>
+			<li>Codebook generation (K-means)</li>
+			<li>Feature Coding (choice: VQ coding/LLC coding) </li>
+			<li>Feature Pooling (choice: sqrtPooling/maxPooling/absolutePooling/gridSumPooling/gridMaxPooling) </li>
+			<li>SVM training (choice: linear-svm/kernel-svm)</li>
+		</ul>
+		<hr></hr>
+		<h2>Methodology</h2>
+		<h3>Feature Extraction</h3>
+		In this project, we mainly use two kinds of feature descriptors, namely SIFT and SURF.
+		Dense keypoints are sampled from each image, and a sift descriptor and a surf descriptor are computed for each keypoints. In this phase, each image is represented by a set of descriptors on dense keypoints.
+		<h3>Feature Coding</h3>
+		We use two kinds of coding schemes, one is the typical VQ coding and another is the famous LLC coding. Details are included in <a href="featcode.html">Feature Coding</a>.
+		<h3>Feature Pooling</h3>
+		Five pooling methods are included in this project, among which two of them maintain spatial information while the rest only maintain scale information. See more in <a href="featpool.html">Feature Pooling</a>.
+		<h3>Classifier Training</h3>
+		In this project we use SVM as our classifier, and both linear and kernel based svm are used. Particularly, we use RBF as our kernel, and we use cvSVM's train_auto method to automatically choose parameters.
+		<p><img width=200px src="linear.jpg"/></p>		
+		<p><img width=300px src="rbf.jpg"/></p>
+		<p>Linear and RBF kernels.</p>
+		<hr></hr>
+		<h2>Experiment</h2>
+		<h3>Codebook Size and Classifier Type</h3>
+		In this experiment, we fix pooling method to sqrt pooling, and coding scheme to VQ coding, while changing codebook's size as well as type of the classifier in order to find a good combination.
+		<p><img src="booksize.png" width=800px /></p>
+		<p>The accuracy of different codebook size with different classifier. The red line is RBF-svm while the blue line is linear svm.</p>
+		From the curve we can see, using RBF kernel for svm training can improve the accuracy whatever the codebook's size is. On the other hand, among all chosen size of codebook, 256 and 1024 are the best two in terms of accuracy.
+		<h3>Pooling Method</h3>
+		In this experiment, we fix codebook's size to 256, coding scheme to VQ coding and classifier to linear svm, while changing pooling methods in order to find the most effective one.
+		<table>
+			<tr><td>method</td><td>max pooling</td><td>sqrt pooling</td><td>absolute pooling</td><td>grid sum pooling</td><td>grid max pooling</td></tr>
+			<tr><td>accuracy</td><td>0.44</td><td><span>0.52</span></td><td>0.49</td><td>0.53</td><td><span>0.535</span></td></tr>
+		</table>
+		While the results show that the best pooling method is grid max pooling method which maintains spatial information. However, sqrt pooling shows considerable result while saving a lot of memory, being a good trade-off choice.
+		<h3>Coding Scheme</h3>
+		We fix other choice while changing the coding scheme, and the results are listed below
+		<table>
+			<tr><td>coding scheme</td><td>codebook size: 256</td><td>codebook size: 1024</td></tr>
+			<tr><td>VQ coding</td><td>0.545</td><td>0.54</td></tr>
+			<tr><td>LLC coding</td><td><span>0.55</span></td><td><span>0.56</span></td></tr>
+		</table>		
+		From the results we can see, LLC coding is better than VQ coding.
+		<hr></hr>
+		<h2>Conclusion</h2>
+		Via a lot of experiments, we found the best configuration is:
+		<ul>
+			<li>Feature type: SIFT + SURF</li>
+			<li>Codebook size: 1024</li>
+			<li>Coding scheme: LLC Coding with K=5</li>
+			<li>Pooling method: Grid Max Pooling</li>
+			<li>Classifier: RBF-based SVM</li>
+		</ul>
+		which has accuracy of <span>0.605</span> on the validation set.
+		<hr></hr>
+		<h2>Reference</h2>
+		<ul>
+			<li>[0] Wang, Jinjun, et al. Locality-constrained linear coding for image classification. CVPR, 2010.</li>
+			<li>[1] H. Bay, T. Tuytelaars and L. V. Gool SURF: Speeded Up Robust Features, ECCV, 2006.</li>
+			<li>[2] Lindeberg, Tony. Scale invariant feature transform.</li>
+
+		</ul>
+	</body>
+</html>

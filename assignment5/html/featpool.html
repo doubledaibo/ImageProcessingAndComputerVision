@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<style>
+			p {text-align: center}
+			span {font-weight: bold}
+		</style>
+	</head>
+	<body>
+		<h1>Feature Pooling</h1>
+		<hr></hr>
+		Assume the length of a code vector is L
+		<h2>Sqrt Pooling</h2>
+		<p><img src="sqrtpool.gif" width=440px /></p>
+		where V is the set of all code vectors at one scale, the ith entry of the pooled vector is the square root of average value of ith entries of all code vectors. <span>This method will produce a 1 by L vector at each scale, ignoring the spatial grids.</span>
+		<hr></hr>
+		<h2>Max Pooling</h2> 
+		<p><img src="maxpool.gif" width=200px /></p>
+		where V is the set of all code vectors at one scale.  <span>This method will produce a 1 by L vector at each scale, ignoring the spatial grids.</span>
+		<hr></hr>
+		<h2>Absolute Pooling</h2> 
+		<p><img src="absolutepool.gif" width=250px /></p>
+		where V is the set of all code vectors at one scale.  <span>This method will produce a 1 by L vector at each scale, ignoring the spatial grids.</span>
+		<hr></hr>
+		<h2>Grid Max Pooling</h2>
+		<p><img src="gridmaxpool.gif" width=200px /></p>
+		where G is the set of all code vectors within one local grid. <span>this method will produce a 1 by L vector for each local grid at each scale, maintaning spatial grids.</span>
+		<hr></hr>
+		<h2>Grid Sum Pooling</h2>
+		<p><img src="gridsumpool.gif" width=350px /></p>
+		where G is the set of all code vectors within one local grid. <span>this method will produce a 1 by L vector for each local grid at each scale, maintaning spatial grids.</span>
+	</body>
+</html>
