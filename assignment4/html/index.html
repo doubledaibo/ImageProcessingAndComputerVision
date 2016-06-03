@@ -1,0 +1,60 @@
+<html>
+<head>
+<style>
+  table, th, tr, td{
+    border: 1px solid black;
+  }
+ span {
+    color: red;
+ }
+  </style>
+</head>
+<body>
+    <h1>Project4 Pedestrian Detection</h1>
+    <p>Dai Bo   1155053920</p>
+    <hr></hr>
+    <h2>Introduction</h2>
+    In this project we've implemented HOG(histogram of oriented gradient)-based pedestrian detector.
+    <hr></hr>
+    <h2>Algorithm Detail</h2>
+    <ul>
+      <li>Compute hog feature vectors for training data</li>
+      <li>Learn a classifier using SVM</li>
+      <li>Detect candidates on an image using sliding-window mechanism with different scales</li>
+      <li>Post-process candidates using non-maximum suppression</li>
+    </ul>
+    <hr></hr>
+<h2>Task Finished</h2>
+<ul>
+  <li>Basic Framework</li>
+  <li>Tried different normalization mechanisms</li>
+  <li>Self-define non-maximum suppression:
+    change the original comparision to IoU (intersection over union)
+  </li>
+</ul>
+<hr></hr>
+<h2>Setting</h2>
+<ul>
+<li>number pixels per cell: 8 x 8</li>
+<li>number cells per block: 2 x 2 (50% overlap between neighbor blocks)</li>
+<li>number of bins: 9</li>
+<li>normalization mechanism: L1-norm</li>
+<li>scales: 0.25, 0.3, 0.5, 1</li>
+<li>thresholds: 3.5, 4.5, 6.5, 6.5</li>
+<li>non-maximum suppression threshold: 0.3</li>
+</ul>
+<hr></hr>
+<h2>Analysis</h2>
+<ul>
+  <li>The classifier is not trained very well (see performance on validation set below) even using opencv's hog extractor.
+  Maybe there are bugs in detection phase, or linear classifier is not good enough.</li>
+  <li>Another reason can also be the limited size of validation set.</li>
+  <div align="center"><img src="curve.jpg" width=1500px></img> <br/>
+    <p>Performance of the classifier on validation set.</p></div>
+  <li>Example Result</li>
+  <div align="center"><img src="ex.jpg" width=500px></img> <br/>
+    <p>Example result.</p></div>
+</ul>
+<hr></hr>
+</body>
+</html>
